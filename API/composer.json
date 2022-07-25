@@ -1,0 +1,16 @@
+{
+    "autoload": {
+        "classmap": [
+            "Models",
+            "Controllers",
+            "Credentials",
+            "Routes",
+            "Helpers",
+            "vendor"
+        ]
+    },
+    "require": {
+        "setasign/fpdf": "1.8",
+        "setasign/fpdi": "^2.3"
+    }
+}
