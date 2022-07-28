@@ -1,63 +1,65 @@
 import { RouteRecordRaw } from 'vue-router'
-
+// Estructura de la WebApp
 const routes: RouteRecordRaw[] = [
-  // Estructura de la wepApp
   {
     path: '/',
-    redirect: '/login/acceso',
+    redirect: { name: 'DashboardLogin' },
   },
-  // Principal, redirige a /login/acceso
   {
-    path: '/',
-    component: () => import('src/layouts/AppLayout.vue'),
+    path: '/primer-usuario',
+    component: () => import('layouts/LoginL.vue'),
     children: [
-      // Primer usuario
       {
-        path: '/primer-usuario/',
-        component: () => import('src/layouts/PrimerUsuarioLayout.vue'),
-        // Hijos
-        children: [
-          {
-            // Registro de primer usuario
-            path: '/primer-usuario/registro',
-            component: () => import('src/pages/PrimerUsuarioRegistro.vue'),
-          },
-        ],
+        path: 'dashboard',
+        name: 'DashboardPrimerUsuario',
+        component: () => import('src/pages/dashboard/primerUsuario/DashPrimerUsuario.vue'),
       },
-
-      // Login
       {
-        path: '/login/',
-        component: () => import('src/layouts/principal/LoginLayout.vue'),
-        children: [
-          {
-            path: '/login/acceso',
-            component: () => import('pages/principal/login/LoginAcceso.vue'),
-          },
-        ],
-      },
-
-      // Dashboard
-      {
-        path: '/dashboard/',
-        component: () => import('src/layouts/principal/DashboardLayout.vue'),
-        children: [
-          {
-            path: '/dashboard/main',
-            component: () => import('pages/principal/dashboard/DashboardMain.vue'),
-            meta: {
-              title: 'Donaciones Margarita',
-            },
-          },
-        ],
+        path: '/:catchAll(.*)*',
+        redirect: { name: 'Error404' },
       },
     ],
   },
-
-  // Caso de error
+  {
+    path: '/login',
+    component: () => import('layouts/LoginL.vue'),
+    children: [
+      {
+        path: 'dashboard',
+        name: 'DashboardLogin',
+        component: () => import('src/pages/dashboard/DashLogin.vue'),
+      },
+      {
+        path: '/:catchAll(.*)*',
+        redirect: { name: 'Error404' },
+      },
+    ],
+  },
+  // Dashboard
+  {
+    path: '/dashboard',
+    component: () => import('layouts/dashboard/DashboardL.vue'),
+    children: [
+      {
+        path: 'main',
+        name: 'DashboardMain',
+        component: () => import('src/pages/dashboard/DashMain.vue'),
+      },
+      {
+        path: 'empleados',
+        name: 'DashboardEmpleados',
+        component: () => import('pages/dashboard/empleados/DashEmpleados.vue'),
+      },
+      {
+        path: '/:catchAll(.*)*',
+        redirect: { name: 'Error404' },
+      },
+    ],
+  },
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue'),
+    name: 'Error404',
+    component: () => import('pages/errors/Error404.vue'),
   },
 ]
 

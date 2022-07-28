@@ -1,6 +1,6 @@
-# Vegetales Iuhcayo (webapp)
+# Sistema Margarita (sistema_margarita)
 
-Aplicación web de VegetalesIuhcayo
+Aplicación web de la Parroquia Divina Providencia
 
 ## Install the dependencies
 ```bash

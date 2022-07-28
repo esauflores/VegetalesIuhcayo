@@ -84,6 +84,7 @@ class Controller
      */
     public static function setStatusWithMessage($status, $message)
     {
+        if (!isset(self::$status)) self::setStatus(new Status());
         self::$status->setStatusWithMessage($status, $message);
     }
 }

@@ -1,20 +1,5 @@
-// Global
 
-.fondo-primario {
-  background-image: linear-gradient(90deg, $primary 0%, $secondary 40%, $secondary 60%, $primary 100%);
-}
-
-.normal-link {
-  color: grey;
-  text-decoration: none;
-}
-
-.dialog-mini {
-  width: 300px;
-  height: 275px;
-}
-
-// Fuentes
+// * Fuentes de texto
 @font-face {
   font-family: merriweather;
   src: url(../assets/fonts/Merriweather-Regular.ttf);
@@ -33,64 +18,29 @@
   font-family: 'sofia';
 }
 
-// CSS para todas las páginas
+// * Estilos de fondo de body
+
+body.bicolor {
+  background-image: linear-gradient(90deg, $primary 0%, $secondary 40%, $secondary 60%, $primary 100%);
+}
+
+body.none{
+  background-image: none
+}
+
+// * General
+
+.normal_link {
+  color: grey;
+  text-decoration: none;
+}
 
 .bg-image {
   background-color: $primary;
 }
 
-.bg-image-reverse {
-  background-color: $primary;
-}
-
-.q-table__container {
-  min-width: 100%;
-}
-
-.dragButton {
-  z-index: 100 !important;
-}
-
-// Dashboardlayout - variables
-
-$sidenav: (
-  'topHeight': 216px,
-  'bottomHeight': 50px,
-);
-
-// Dashboardlayout - navbar y sidenav
-
-#sidenav {
-  background-color: $secondary;
-}
-
-#userDropdown {
-  margin-top: 6px !important;
-}
-
-#sidenavLinks {
-  height: calc(100% - #{map-get($sidenav, 'topHeight')} - #{map-get($sidenav, 'bottomHeight')});
-  margin-top: map-get($sidenav, 'topHeight');
-  margin-bottom: map-get($sidenav, 'bottomHeight');
-  padding-right: 8px;
-  color: $primary;
-}
-
-.sidenavLinksNoTop {
-  height: calc(100% - #{map-get($sidenav, 'bottomHeight')}) !important;
-  margin-top: 0px !important;
-}
-
-.q-tabs__arrow {
-  color: black;
-}
-
-#sidenavTop {
-  height: map-get($sidenav, 'topHeight') !important;
-}
-
-#sidenavBottom {
-  height: map-get($sidenav, 'bottomHeight') !important;
+.bg-bicolor{
+  background-image: linear-gradient(90deg, $primary 0%, $secondary 40%, $secondary 60%, $primary 100%);
 }
 
 //niveles de margen
@@ -100,101 +50,40 @@ $sidenav: (
   }
 }
 
-//Productos
-.foto_producto {
-  width: 50px !important;
-  height: 50px !important;
+// * Dashboard - Main
+
+$sidenav: (
+  'topHeight': 50px,
+  'bottomHeight': 50px,
+);
+
+#sidenav {
+  background-color: $secondary;
 }
 
-.q-expansion-item__container > .q-item {
-  padding-right: 0px;
+#userDropdown {
+  margin-top: 6px !important;
 }
 
-#headerSidenav {
-  width: 240px !important;
+#sidenavTop {
+  height: map-get($sidenav, 'topHeight') !important;
 }
 
-.q-checkbox.disabled.readonly {
-  opacity: 1 !important;
+#sidenavLinks {
+  height: calc(100% - #{map-get($sidenav, 'topHeight')} - 166px - #{map-get($sidenav, 'bottomHeight')});
+  margin-top: calc(#{map-get($sidenav, 'topHeight')} + 166px);
+  margin-bottom: map-get($sidenav, 'bottomHeight');
+  padding-right: 8px;
+  color: $primary;
 }
 
-.q-checkbox.disabled.readonly,
-.q-checkbox.disabled.readonly * {
-  cursor: inherit !important;
+#sidenavBottom {
+  height: map-get($sidenav, 'bottomHeight') !important;
+}body {
+  background-image: none;
 }
 
-.table-border-bottom > th {
-  border-bottom-width: 1px !important;
-}
 
-.table-border-left > th {
-  border-left-width: 1px !important;
-}
-
-.border-left {
-  border-left-width: 1px !important;
-  border-right-width: 1px !important;
-}
-
-.no-border-left {
-  border-left-width: 0px !important;
-}
-
-.border-right {
-  border-right-width: 1px !important;
-}
-
-.no-border-right {
-  border-right-width: 0px !important;
-}
-
-.border-bottom {
-  border-bottom-width: 1px !important;
-}
-
-.no-border-bottom {
-  border-bottom-width: 0px !important;
-}
-
-.border-top {
-  border-top-width: 1px !important;
-}
-
-.no-border-top {
-  border-top-width: 0px !important;
-}
-
-.border-all {
-  border-width: 1px !important;
-}
-
-.img_producto {
-  height: 50px;
-  width: 50px;
-}
-
-.no_data {
-  height: 150px;
-}
-
-.modal {
-  height: 260px;
-  width: 400px;
-}
-
-.action_card {
-  width: 80%;
-}
-
-.img_producto_big {
-  height: 100px;
-  width: 100px;
-}
-
-.img_box {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.bg-bicolor {
-  background-image: linear-gradient(90deg, $primary 0%, $secondary 40%, $secondary 60%, $primary 100%);
+body.none {
+  background-image: none !important;
 }

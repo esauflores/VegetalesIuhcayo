@@ -8,15 +8,18 @@ use App\Models\BaseModels\Model;
  * Contiene la estructura de un camino final de un controlador,
  * manteniendo la información hacia el controlador y método a utilizar
  * 
- * @property callable $controllerCallable Función a ejecutar del controlador
- * @property callable $controllerResultCallable Función para obtener el resultado del controlador
+ * @property callable $methodCallable Método a ejecutar del controlador
+ * @property callable $resultCallable Método para obtener el resultado del controlador
+ * @property callable $statusCallable Método para obtener el status del controlador
+
  */
 class RouteEnd extends Model
 {
     // * Propiedades
 
-    private $controllerCallable;
-    private $controllerResultCallable;
+    private $methodCallable;
+    private $resultCallable;
+    private $statusCallable;
 
     // * Constructor
 
@@ -24,57 +27,81 @@ class RouteEnd extends Model
      * Constructor:
      * asigna por defecto las propiedades de la clase
      * 
-     * @param callable $controllerCallable
-     * @param callable $controllerResultCallable
+     * @param callable $methodCallable
+     * @param callable $resultCallable
+     * @param callable $statusCallable
      */
-    function __construct($controllerCallable = '', $controllerResultCallable = '')
-    {
+    function __construct(
+        $methodCallable = '',
+        $resultCallable = '',
+        $statusCallable = ''
+    ) {
         parent::__construct();
-        $this->setControllerCallable($controllerCallable);
-        $this->setControllerResultCallable($controllerResultCallable);
+        $this->setMethodCallable($methodCallable);
+        $this->setResultCallable($resultCallable);
+        $this->setStatusCallable($statusCallable);
     }
 
     // * Getters
 
     /** 
-     * Obtiene el valor de $controllerCallable
+     * Obtiene el valor de $methodCallable
      * 
      * @return callable
      */
-    public function getControllerCallable()
+    public function getMethodCallable()
     {
-        return $this->controllerCallable;
+        return $this->methodCallable;
     }
 
     /** 
-     * Obtiene el valor de $controllerCallable
+     * Obtiene el valor de $methodCallable
      * 
      * @return callable
      */
-    public function getControllerResultCallable()
+    public function getResultCallable()
     {
-        return $this->controllerResultCallable;
+        return $this->resultCallable;
+    }
+
+    /** 
+     * Obtiene el valor de $statusCallable
+     * 
+     * @return callable
+     */
+    public function getStatusCallable()
+    {
+        return $this->statusCallable;
     }
 
     // * Setters
 
     /**
-     * Asigna el valor de $controllerCallable
+     * Asigna el valor de $methodCallable
      *
-     * @param callable $controllerCallable
+     * @param callable $methodCallable
      */
-    private function setControllerCallable($controllerCallable)
+    private function setMethodCallable($methodCallable)
     {
-        $this->controllerCallable = $controllerCallable;
+        $this->methodCallable = $methodCallable;
     }
 
     /**
-     * Asigna el valor de $controllerResultCallable
+     * Asigna el valor de $resultCallable
      *
-     * @param callable $controllerResultCallable
+     * @param callable $resultCallable
      */
-    private function setControllerResultCallable($controllerResultCallable)
+    private function setResultCallable($resultCallable)
     {
-        $this->controllerResultCallable = $controllerResultCallable;
+        $this->resultCallable = $resultCallable;
+    }
+    /**
+     * Asigna el valor de $statusCallable
+     *
+     * @param callable $statusCallable
+     */
+    private function setStatusCallable($statusCallable)
+    {
+        $this->statusCallable = $statusCallable;
     }
 }

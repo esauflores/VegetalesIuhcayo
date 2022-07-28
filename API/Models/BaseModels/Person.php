@@ -33,10 +33,10 @@ class Person extends Model
      * @param string $telefono
      */
     function __construct(
-        $nombreCompleto = '',
-        $correo = '',
-        $dui = '',
-        $telefono = ''
+        $nombreCompleto = 'Example Example',
+        $telefono = '0000-0000',
+        $dui = '00000000-0',
+        $correo = 'example@gmail.com',
     ) {
         parent::__construct();
         $this->setNombreCompleto($nombreCompleto);

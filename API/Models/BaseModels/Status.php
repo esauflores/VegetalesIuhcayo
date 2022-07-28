@@ -27,7 +27,7 @@ class Status
      * @param int $routeEnd 
      * @param string $message
      */
-    function __construct($status = 500, $message = 'Error desconocido')
+    function __construct($status = 200, $message = 'OK')
     {
         $this->setStatus($status);
         $this->setMessage($message);
