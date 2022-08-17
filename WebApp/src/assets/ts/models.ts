@@ -13,10 +13,3 @@ export interface sidenavLink {
   route: string | undefined
   sublinks: Array<sidenavLink> | undefined | null
 }
-
-export interface loginData {
-  id: number
-  nombre_usuario: string
-  correo: string
-  imagen: string
-}

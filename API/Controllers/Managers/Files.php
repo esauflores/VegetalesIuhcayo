@@ -174,9 +174,17 @@ class FilesManager extends Controller
 
         // Intenta guardar el archivo en la carpeta de archivos
         $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = $filename . '.' . $extension;
 
-        if (!@move_uploaded_file(self::$file['tmp_name'], $fileRoute . '/'  . $filename)) {
+        // Ruta final donde se colocará el archivo
+        $fileFinal = $fileRoute . '/'  . $filename . '.' . $extension;
+
+        // Si ya hay un archivo en esa ruta, buscamos sustituir el archivo
+        if (file_exists($fileFinal)) {
+            chmod($fileFinal, 0755); // Cambia los permisos del archivo, si se puede
+            unlink($fileFinal); // Elimina el archivo
+        }
+
+        if (!@move_uploaded_file(self::$file['tmp_name'], $fileFinal)) {
             self::setStatusWithMessage(
                 500,
                 $prefix . 'No se pudo subir el archivo'
@@ -195,7 +203,7 @@ class FilesManager extends Controller
         if (!DatabaseManager::executeQueryGetData($query, $params)) {
             // Caso de error, asigna el mensaje de error y elimina el archivo creado
             self::setStatus(DatabaseManager::getStatus());
-            self::deleteFile($route, $filename);
+            self::deleteFile($fileFinal);
             return false;
         }
 
@@ -210,29 +218,22 @@ class FilesManager extends Controller
     /**
      * Función que permite añadir archivos
      * 
-     * @param string $route Ruta donde se añadirá el archivo
-     * @param string $filename nombre del archivo
+     * @param string $fileFinal Ruta final del archivo
+     * @param int|null $fileID ID del archivo
      * 
      * @return bool True en caso de éxito, false en caso contrario
      */
-    public static function deleteFile($fileRoute, $filename)
+    public static function deleteFile($fileFinal, $fileID = null)
     {
         $prefix = 'Error al elminar el archivo:';
 
         // Si no existe la ruta del folder del archivo, error
-        if (!file_exists($fileRoute)) {
-            self::setStatusWithMessage(
-                500,
-                $prefix . ' No existe la ruta de archivos dentro del sistema'
-            );
-            return false;
-        }
 
         // Si el archivo no existe cuenta como eliminado
-        if (!file_exists($fileRoute . '/' . $filename)) return true;
+        if (!file_exists($fileFinal)) return true;
 
         // Si no se pudo eliminar el archivo, error
-        if (!@unlink($fileRoute . '/' . $filename)) {
+        if (!@unlink($fileFinal)) {
             self::setStatusWithMessage(
                 500,
                 $prefix . ' No se pudo eliminar el archivo'
@@ -240,6 +241,75 @@ class FilesManager extends Controller
             return false;
         }
 
+        // Si no necesita eliminar el id en la base de datos, retorna
+        if (!$fileID) return true;
+
+        $query = 'DELETE FROM configuracion.archivo
+        WHERE id_archivo = ?';
+        $params = [$fileID];
+
+        // No se pudo eliminar de la base de datos
+        if (!DatabaseManager::executeQuery($query, $params)) {
+            self::setStatus(DatabaseManager::getStatus());
+            return false;
+        }
+
         return true;
+    }
+
+    /**
+     * Regresa una archivo en base a su id
+     * 
+     * @return bool|void En caso de éxito imprime el archivo, retorna false en caso contrario
+
+     */
+    public static function obtenerArchivo()
+    {
+        // Obtiene el id del archivo
+        if (!isset($_GET['id'])) {
+            self::setStatusWithMessage(500, 'ID de archivo no definido');
+            return false;
+        }
+
+        $id = $_GET['id'];
+
+        // Valida que sea un entero
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+            self::setStatusWithMessage(500, 'ID de archivo no es un entero');
+            return false;
+        }
+
+        // Busca la ruta del archivo en la base de datos
+
+        $query =
+            "SELECT menu.url_path AS directory, arch.url_path AS filename
+            FROM configuracion.menu_archivo AS menu 
+            INNER JOIN configuracion.archivo AS arch ON menu.id_archivo = arch.id_archivo_padre
+            WHERE arch.id_archivo = ?";
+        $params = [$id];
+
+        // No se puede obtener la información de la base de datos o archivo no existente
+        if (!DatabaseManager::executeQueryGetData($query, $params)) {
+            self::setStatus(DatabaseManager::getStatus());
+            return false;
+        }
+
+        if (sizeof($result = DatabaseManager::getResult()) == 0) {
+            self::setStatusWithMessage(404, 'Archivo no existente en la base de datos');
+            return false;
+        }
+
+        $directory = $result[0]['directory'];
+        $filename = $result[0]['filename'];
+        $fileFinal = dirname(__DIR__, 3) . '/' . $directory . '/' . $filename;
+        if (!file_exists($fileFinal)) {
+            self::setStatusWithMessage(404, 'Archivo no encontrado');
+            return false;
+        }
+
+        $type = mime_content_type($fileFinal);
+        header("Content-Type: image/png");
+        echo file_get_contents($fileFinal);
+        exit;
     }
 }

@@ -12,7 +12,7 @@ use App\Models\User;
  */
 class UsuariosController extends Controller
 {
-    // * Métodos
+    // * Métodos base
 
     /**
      * Obtiene el número de usuarios activos dentro del sistema

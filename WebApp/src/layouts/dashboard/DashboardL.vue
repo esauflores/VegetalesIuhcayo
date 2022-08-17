@@ -10,6 +10,7 @@
       v-model="dash.sidenavState"
       side="left"
       elevated
+      :behavior="behaviorMode"
       content-class="column justify-between"
       show-if-above
     >
@@ -69,29 +70,28 @@ import DashHeader from 'src/components/dashboard/DashHeader.vue'
 import DashFooter from 'src/components/dashboard/DashFooter.vue'
 import { defineComponent } from 'vue'
 import DashLink from 'src/components/dashboard/DashLink.vue'
+import { StoreGeneric } from 'pinia'
 
 // app
 export default defineComponent({
   data() {
     return {
-      dash: useDConfigStore(),
+      dash: useDConfigStore() as StoreGeneric,
     }
   },
-
-  created() {
-    if (!this.$q.screen.lt.md) {
-      this.dash.sidenavState = true
-    }
+  computed: {
+    behaviorMode: function (): 'mobile' | 'desktop' {
+      return this.$q.screen.lt.md ? 'mobile' : 'desktop'
+    },
   },
-
   beforeCreate: () => {
+    // Asigna el fondo a ninguno (color blanco)
     document.body.className = 'none'
   },
   beforeUpdate: () => {
+    // Asigna el fondo a ninguno (color blanco)
     document.body.className = 'none'
   },
-
   components: { DashFooter, DashHeader, DashLink },
 })
 </script>
-
